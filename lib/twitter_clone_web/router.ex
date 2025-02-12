@@ -29,6 +29,10 @@ defmodule TwitterCloneWeb.Router do
 
     live "/posts/:id", PostLive.Show, :show
     live "/posts/:id/show/edit", PostLive.Show, :edit
+
+    live "/signup", SignupLive
+    live "/login", AuthLive
+    live "/dashboard", PostLive.Index, :index
   end
 
   # Other scopes may use custom stacks.

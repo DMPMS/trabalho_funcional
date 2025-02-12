@@ -1,0 +1,30 @@
+defmodule TwitterClone.Accounts.User do
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  schema "users" do
+    field :username, :string
+    field :password, :string, virtual: true
+    field :password_hash, :string
+
+    timestamps()
+  end
+
+  def changeset(user, attrs) do
+    user
+    |> cast(attrs, [:username, :password])
+    |> validate_required([:username, :password])
+    |> unique_constraint(:username)
+    |> put_password_hash()
+  end
+
+  defp put_password_hash(changeset) do
+    if changeset.valid? do
+      password = get_change(changeset, :password)
+      hashed_password = Bcrypt.hash_pwd_salt(password)
+      put_change(changeset, :password_hash, hashed_password)
+    else
+      changeset
+    end
+  end
+end
