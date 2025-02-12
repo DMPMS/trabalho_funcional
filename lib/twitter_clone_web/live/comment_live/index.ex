@@ -17,7 +17,7 @@ defmodule TwitterCloneWeb.CommentLive.Index do
 
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
-    |> assign(:page_title, "Edit Comment")
+    |> assign(:page_title, "Editar Comentário")
     |> assign(:comment, Timeline.get_comment!(id))
   end
 
@@ -31,7 +31,7 @@ defmodule TwitterCloneWeb.CommentLive.Index do
 
   defp apply_action(socket, :index, %{"post_id" => post_id}) do
     socket
-    |> assign(:page_title, "Listing Comments")
+    |> assign(:page_title, "Lista de Comentários")
     |> assign(:comments, list_comments(post_id))
   end
 

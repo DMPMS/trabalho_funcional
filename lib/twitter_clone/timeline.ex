@@ -18,7 +18,13 @@ defmodule TwitterClone.Timeline do
 
   """
   def list_posts do
-    Repo.all(from p in Post, order_by: [desc: p.id])
+    Repo.all(
+      from p in Post,
+        left_join: c in assoc(p, :comments),
+        group_by: p.id,
+        order_by: [desc: p.id],
+        select: %{p | comments_count: count(c.id)}
+    )
   end
 
   def inc_likes(%Post{id: id}) do

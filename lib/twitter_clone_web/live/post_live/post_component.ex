@@ -20,7 +20,7 @@ defmodule TwitterCloneWeb.PostLive.PostComponent do
           <div style="cursor: pointer; color: #1da1f2; font-size: 14px;">
             <%= live_patch to: Routes.comment_index_path(@socket, :index, @post.id) do %>
               <div style="cursor: pointer; color: #1da1f2; font-size: 14px;">
-                Comentar
+                Comentários <%= @post.comments_count %>
               </div>
             <% end %>
           </div>
