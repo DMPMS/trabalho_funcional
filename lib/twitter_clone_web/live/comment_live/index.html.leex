@@ -1,0 +1,18 @@
+<h1>Listing Comments</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal @socket, TwitterCloneWeb.CommentLive.FormComponent,
+    id: @comment.id || :new,
+    title: @page_title,
+    action: @live_action,
+    comment: @comment,
+    return_to: Routes.comment_index_path(@socket, :index, @post_id) %>
+<% end %>
+
+<span><%= live_patch "Novo Comentário", to: Routes.comment_index_path(@socket, :new, @post_id) %></span>
+
+<div id="comments" phx-update="prepend">
+  <%= for comment <- @comments do %>
+    <%= live_component @socket, TwitterCloneWeb.CommentLive.CommentComponent, id: comment.id, comment: comment %>
+  <% end %>
+</div>

@@ -23,6 +23,10 @@ defmodule TwitterCloneWeb.Router do
     live "/posts/new", PostLive.Index, :new
     live "/posts/:id/edit", PostLive.Index, :edit
 
+    live "/posts/:post_id/comments", CommentLive.Index, :index
+    live "/posts/:post_id/comments/new", CommentLive.Index, :new
+    live "/posts/:post_id/comments/:id/edit", CommentLive.Index, :edit
+
     live "/posts/:id", PostLive.Show, :show
     live "/posts/:id/show/edit", PostLive.Show, :edit
   end
