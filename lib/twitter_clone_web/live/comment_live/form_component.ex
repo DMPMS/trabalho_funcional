@@ -38,7 +38,7 @@ defmodule TwitterCloneWeb.CommentLive.FormComponent do
       {:ok, _comment} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Comentário atualizado sucesso")
+         |> put_flash(:info, "Comentário atualizado com sucesso")
          |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, %Ecto.Changeset{} = changeset} ->

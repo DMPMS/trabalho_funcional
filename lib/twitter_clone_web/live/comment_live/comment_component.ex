@@ -11,6 +11,15 @@ defmodule TwitterCloneWeb.CommentLive.CommentComponent do
           <p style="font-size: 14px;"><%= @comment.post_id %></p>
         </div>
       </div>
+
+      <div style="display: flex; gap: 10px;">
+        <%= live_patch to: Routes.comment_index_path(@socket, :edit, @comment.post_id, @comment.id) do %>
+          <div style="cursor: pointer; color: #1da1f2; font-size: 14px;">Editar</div>
+        <% end %>
+        <%= link to: "#", phx_click: "delete", phx_value_id: @comment.id, data: [confirm: "Tem certeza?"] do %>
+          <div style="cursor: pointer; color: #1da1f2; font-size: 14px;">Remover</div>
+        <% end %>
+      </div>
     </div>
     """
   end

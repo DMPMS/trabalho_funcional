@@ -7,7 +7,12 @@ defmodule TwitterCloneWeb.CommentLive.Index do
   @impl true
   def mount(%{"post_id" => post_id}, _session, socket) do
     comments = list_comments(post_id)
-    {:ok, assign(socket, comments: comments, post_id: post_id)}
+
+    {:ok,
+     assign(socket,
+       comments: comments,
+       post_id: post_id
+     ), temporary_assigns: [comments: []]}
   end
 
   @impl true
@@ -36,9 +41,15 @@ defmodule TwitterCloneWeb.CommentLive.Index do
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     comment = Timeline.get_comment!(id)
-    {:ok, _} = Timeline.delete_comment(comment)
 
-    {:noreply, assign(socket, :comments, list_comments(socket.assigns.post_id))}
+    case Timeline.delete_comment(comment) do
+      {:ok, _} ->
+        comments = list_comments(socket.assigns.post_id)
+        {:noreply, assign(socket, :comments, comments)}
+
+      {:error, _} ->
+        {:noreply, socket}
+    end
   end
 
   defp list_comments(post_id) do
