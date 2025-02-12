@@ -6,13 +6,15 @@ defmodule TwitterCloneWeb.CommentLive.Index do
 
   @impl true
   def mount(%{"post_id" => post_id}, _session, socket) do
+    if connected?(socket), do: Timeline.subscribe_comments()
+
     comments = list_comments(post_id)
 
     {:ok,
      assign(socket,
        comments: comments,
        post_id: post_id
-     ), temporary_assigns: [comments: []]}
+     )}
   end
 
   @impl true
@@ -49,6 +51,18 @@ defmodule TwitterCloneWeb.CommentLive.Index do
 
       {:error, _} ->
         {:noreply, socket}
+    end
+  end
+
+  @impl true
+  def handle_info({:comment_created, comment}, socket) do
+    # Apenas atualiza se o comentário pertence ao post visível
+    if comment.post_id == String.to_integer(socket.assigns.post_id) do
+      # Adiciona o novo comentário na lista
+      comments = [comment | socket.assigns.comments]
+      {:noreply, assign(socket, :comments, comments)}
+    else
+      {:noreply, socket}
     end
   end
 

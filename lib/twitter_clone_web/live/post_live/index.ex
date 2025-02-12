@@ -7,8 +7,9 @@ defmodule TwitterCloneWeb.PostLive.Index do
   @impl true
   def mount(_params, _session, socket) do
     if connected?(socket), do: Timeline.subscribe()
+
     posts = list_posts()
-    {:ok, assign(socket, :posts, posts), temporary_assigns: [posts: []]}
+    {:ok, assign(socket, :posts, posts)}
   end
 
   @impl true
@@ -47,13 +48,25 @@ defmodule TwitterCloneWeb.PostLive.Index do
     {:noreply, update(socket, :posts, fn posts -> [post | posts] end)}
   end
 
-  def handle_info({:post_updated, post}, socket) do
-    {:noreply, update(socket, :posts, fn posts -> [post | posts] end)}
-  end
-
   # def handle_info({:post_deleted, post}, socket) do
   #   {:noreply, update(socket, :posts, fn posts -> [post | posts] end)}
   # end
+
+  @impl true
+  def handle_info({:post_updated, updated_post}, socket) do
+    IO.inspect(updated_post, label: "🚀 Evento post_updated recebido")
+
+    updated_posts =
+      Enum.map(socket.assigns.posts, fn post ->
+        if post.id == updated_post.id do
+          updated_post
+        else
+          post
+        end
+      end)
+
+    {:noreply, assign(socket, :posts, updated_posts)}
+  end
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do

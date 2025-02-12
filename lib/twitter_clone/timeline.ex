@@ -43,6 +43,14 @@ defmodule TwitterClone.Timeline do
     broadcast({:ok, post}, :post_updated)
   end
 
+  def get_comments_count(post_id) do
+    from(c in TwitterClone.Timeline.Comment,
+      where: c.post_id == ^post_id,
+      select: count(c.id)
+    )
+    |> Repo.one()
+  end
+
   @doc """
   Gets a single post.
 
@@ -189,6 +197,7 @@ defmodule TwitterClone.Timeline do
     %Comment{}
     |> Comment.changeset(attrs)
     |> Repo.insert()
+    |> broadcast_comment(:comment_created)
   end
 
   @doc """
@@ -207,6 +216,7 @@ defmodule TwitterClone.Timeline do
     comment
     |> Comment.changeset(attrs)
     |> Repo.update()
+    |> broadcast_comment(:comment_updated)
   end
 
   @doc """
@@ -223,6 +233,7 @@ defmodule TwitterClone.Timeline do
   """
   def delete_comment(%Comment{} = comment) do
     Repo.delete(comment)
+    |> broadcast_comment(:comment_deleted)
   end
 
   @doc """
@@ -236,5 +247,27 @@ defmodule TwitterClone.Timeline do
   """
   def change_comment(%Comment{} = comment, attrs \\ %{}) do
     Comment.changeset(comment, attrs)
+  end
+
+  def subscribe_comments do
+    Phoenix.PubSub.subscribe(TwitterClone.PubSub, "comments")
+  end
+
+  defp broadcast_comment({:error, _reason} = error, _event), do: error
+
+  defp broadcast_comment({:ok, comment}, event) do
+    post = TwitterClone.Timeline.get_post!(comment.post_id)
+
+    updated_post = %{
+      post: post,
+      comments_count: TwitterClone.Timeline.get_comments_count(post.id)
+    }
+
+    IO.inspect(updated_post, label: "📢 Enviando atualização do post")
+
+    Phoenix.PubSub.broadcast(TwitterClone.PubSub, "comments", {event, comment})
+    Phoenix.PubSub.broadcast(TwitterClone.PubSub, "posts", {:post_updated, updated_post})
+
+    {:ok, comment}
   end
 end
