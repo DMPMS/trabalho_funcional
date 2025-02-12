@@ -12,7 +12,12 @@
 <span><%= live_patch "Nova Publicação", to: Routes.post_index_path(@socket, :new) %></span>
 
 <div id="posts" phx-update="prepend">
-  <%= for post <- @posts do %>
-    <%= live_component @socket, TwitterCloneWeb.PostLive.PostComponent, id: post.id, post: post %>
+  <%= for p <- @posts do %>
+    <%= live_component @socket,
+      TwitterCloneWeb.PostLive.PostComponent,
+      id: p.post.id,
+      post: p.post,
+      comments_count: p.comments_count
+    %>
   <% end %>
 </div>

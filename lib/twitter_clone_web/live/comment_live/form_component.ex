@@ -24,6 +24,12 @@ defmodule TwitterCloneWeb.CommentLive.FormComponent do
   end
 
   def handle_event("save", %{"comment" => comment_params}, socket) do
+    comment_params =
+      Map.merge(
+        comment_params,
+        %{"post_id" => socket.assigns.comment.post_id}
+      )
+
     save_comment(socket, socket.assigns.action, comment_params)
   end
 

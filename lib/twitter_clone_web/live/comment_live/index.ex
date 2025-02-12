@@ -22,11 +22,9 @@ defmodule TwitterCloneWeb.CommentLive.Index do
   end
 
   defp apply_action(socket, :new, %{"post_id" => post_id}) do
-    IO.puts(post_id)
-
     socket
     |> assign(:page_title, "Novo Comentario")
-    |> assign(:comment, %Comment{})
+    |> assign(:comment, %Comment{post_id: post_id})
   end
 
   defp apply_action(socket, :index, %{"post_id" => post_id}) do

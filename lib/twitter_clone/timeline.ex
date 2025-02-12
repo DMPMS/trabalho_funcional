@@ -23,7 +23,7 @@ defmodule TwitterClone.Timeline do
         left_join: c in assoc(p, :comments),
         group_by: p.id,
         order_by: [desc: p.id],
-        select: %{p | comments_count: count(c.id)}
+        select: %{post: p, comments_count: count(c.id)}
     )
   end
 
