@@ -5,9 +5,14 @@ defmodule TwitterCloneWeb.PostLiveTest do
 
   alias TwitterClone.Timeline
 
-  @create_attrs %{body: "some body", likes_count: 42, reposts_count: 42, username: "some username"}
-  @update_attrs %{body: "some updated body", likes_count: 43, reposts_count: 43, username: "some updated username"}
-  @invalid_attrs %{body: nil, likes_count: nil, reposts_count: nil, username: nil}
+  @create_attrs %{body: "some body", likes_count: 42, reposts_count: 42, title: "some title"}
+  @update_attrs %{
+    body: "some updated body",
+    likes_count: 43,
+    reposts_count: 43,
+    title: "some updated title"
+  }
+  @invalid_attrs %{body: nil, likes_count: nil, reposts_count: nil, title: nil}
 
   defp fixture(:post) do
     {:ok, post} = Timeline.create_post(@create_attrs)

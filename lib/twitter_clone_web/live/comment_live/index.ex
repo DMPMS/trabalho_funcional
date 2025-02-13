@@ -3,18 +3,19 @@ defmodule TwitterCloneWeb.CommentLive.Index do
 
   alias TwitterClone.Timeline
   alias TwitterClone.Timeline.Comment
+  alias TwitterClone.Guardian
 
   @impl true
-  def mount(%{"post_id" => post_id}, _session, socket) do
+  def mount(%{"post_id" => post_id}, session, socket) do
     if connected?(socket), do: Timeline.subscribe_comments()
+    user = get_current_user(session) |> elem(1)
 
-    comments = list_comments(post_id)
-
-    {:ok,
-     assign(socket,
-       comments: comments,
-       post_id: post_id
-     )}
+    if user do
+      comments = list_comments(post_id)
+      {:ok, assign(socket, comments: comments, current_user: user, post_id: post_id)}
+    else
+      {:ok, redirect(socket, to: "/logout")}
+    end
   end
 
   @impl true
@@ -68,5 +69,18 @@ defmodule TwitterCloneWeb.CommentLive.Index do
 
   defp list_comments(post_id) do
     Timeline.list_comments(post_id)
+  end
+
+  defp get_current_user(session) do
+    case session["token"] do
+      nil ->
+        nil
+
+      token ->
+        case Guardian.decode_and_verify(token) do
+          {:ok, claims} -> Guardian.resource_from_claims(claims)
+          _ -> nil
+        end
+    end
   end
 end

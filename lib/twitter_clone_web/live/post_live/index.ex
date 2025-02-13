@@ -3,13 +3,19 @@ defmodule TwitterCloneWeb.PostLive.Index do
 
   alias TwitterClone.Timeline
   alias TwitterClone.Timeline.Post
+  alias TwitterClone.Guardian
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(_params, session, socket) do
     if connected?(socket), do: Timeline.subscribe()
+    user = get_current_user(session) |> elem(1)
 
-    posts = list_posts()
-    {:ok, assign(socket, :posts, posts)}
+    if user do
+      posts = list_posts()
+      {:ok, assign(socket, current_user: user, posts: posts)}
+    else
+      {:ok, redirect(socket, to: "/logout")}
+    end
   end
 
   @impl true
@@ -27,6 +33,7 @@ defmodule TwitterCloneWeb.PostLive.Index do
     socket
     |> assign(:page_title, "Nova Publicação")
     |> assign(:post, %Post{})
+    |> assign(:current_user, socket.assigns.current_user)
   end
 
   defp apply_action(socket, :index, _params) do
@@ -54,8 +61,6 @@ defmodule TwitterCloneWeb.PostLive.Index do
 
   @impl true
   def handle_info({:post_updated, updated_post}, socket) do
-    IO.inspect(updated_post, label: "🚀 Evento post_updated recebido")
-
     updated_posts =
       Enum.map(socket.assigns.posts, fn post ->
         if post.id == updated_post.id do
@@ -84,5 +89,18 @@ defmodule TwitterCloneWeb.PostLive.Index do
 
   defp list_posts do
     Timeline.list_posts()
+  end
+
+  defp get_current_user(session) do
+    case session["token"] do
+      nil ->
+        nil
+
+      token ->
+        case Guardian.decode_and_verify(token) do
+          {:ok, claims} -> Guardian.resource_from_claims(claims)
+          _ -> nil
+        end
+    end
   end
 end

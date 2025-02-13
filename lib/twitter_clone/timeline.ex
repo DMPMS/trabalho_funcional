@@ -21,9 +21,10 @@ defmodule TwitterClone.Timeline do
     Repo.all(
       from p in Post,
         left_join: c in assoc(p, :comments),
-        group_by: p.id,
+        left_join: u in assoc(p, :user),
+        group_by: [p.id, u.username],
         order_by: [desc: p.id],
-        select: %{post: p, comments_count: count(c.id)}
+        select: %{post: p, comments_count: count(c.id), user_name: u.username}
     )
   end
 
@@ -160,8 +161,10 @@ defmodule TwitterClone.Timeline do
   def list_comments(post_id) do
     Repo.all(
       from c in Comment,
+        left_join: u in assoc(c, :user),
         where: c.post_id == ^post_id,
-        order_by: [desc: c.id]
+        order_by: [desc: c.id],
+        select: %{comment: c, user_name: u.username}
     )
   end
 
@@ -262,8 +265,6 @@ defmodule TwitterClone.Timeline do
       post: post,
       comments_count: TwitterClone.Timeline.get_comments_count(post.id)
     }
-
-    IO.inspect(updated_post, label: "📢 Enviando atualização do post")
 
     Phoenix.PubSub.broadcast(TwitterClone.PubSub, "comments", {event, comment})
     Phoenix.PubSub.broadcast(TwitterClone.PubSub, "posts", {:post_updated, updated_post})

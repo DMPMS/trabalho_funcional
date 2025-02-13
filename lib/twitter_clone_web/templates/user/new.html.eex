@@ -1,0 +1,21 @@
+<h2>Cadastro</h2>
+<%= form_for @changeset, Routes.user_path(@conn, :create), fn f -> %>
+  <div>
+    <%= label f, :username %>
+    <%= text_input f, :username %>
+    <%= error_tag f, :username %>
+  </div>
+  <div>
+    <%= label f, :password %>
+    <%= password_input f, :password %>
+    <%= error_tag f, :password %>
+  </div>
+  <div>
+    <%= label f, :role_key %>
+    <%= text_input f, :role_key %>
+    <%= error_tag f, :role_key %>
+  </div>
+  <div>
+    <%= submit "Cadastrar" %>
+  </div>
+<% end %>

@@ -10,8 +10,9 @@
     <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </head>
   <body>
-    <a href="/signup">Criar Conta</a> |
-    <a href="/login">Login</a>
+    <a href="/register">Criar Conta</a> |
+    <a href="/login">Login</a>|
+    <a href="/logout">Logout</a>
     <%= @inner_content %>
   </body>
 </html>

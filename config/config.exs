@@ -18,6 +18,16 @@ config :twitter_clone, TwitterCloneWeb.Endpoint,
   pubsub_server: TwitterClone.PubSub,
   live_view: [signing_salt: "rIVUCglA"]
 
+# Configures Guardian
+config :twitter_clone, TwitterClone.Guardian,
+  issuer: "twitter_clone",
+  secret_key:
+    System.get_env("GUARDIAN_SECRET_KEY") ||
+      "UIGandoN2ESfVD5TrEi330HPJpFjqf2ID+R+6hacPC2TQkvqT2sWXSrsnyW6x",
+  token_ttl: %{
+    "access" => {1, :hours}
+  }
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

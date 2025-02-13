@@ -6,9 +6,14 @@ defmodule TwitterClone.TimelineTest do
   describe "posts" do
     alias TwitterClone.Timeline.Post
 
-    @valid_attrs %{body: "some body", likes_count: 42, reposts_count: 42, username: "some username"}
-    @update_attrs %{body: "some updated body", likes_count: 43, reposts_count: 43, username: "some updated username"}
-    @invalid_attrs %{body: nil, likes_count: nil, reposts_count: nil, username: nil}
+    @valid_attrs %{body: "some body", likes_count: 42, reposts_count: 42, title: "some title"}
+    @update_attrs %{
+      body: "some updated body",
+      likes_count: 43,
+      reposts_count: 43,
+      title: "some updated title"
+    }
+    @invalid_attrs %{body: nil, likes_count: nil, reposts_count: nil, title: nil}
 
     def post_fixture(attrs \\ %{}) do
       {:ok, post} =
@@ -34,7 +39,7 @@ defmodule TwitterClone.TimelineTest do
       assert post.body == "some body"
       assert post.likes_count == 42
       assert post.reposts_count == 42
-      assert post.username == "some username"
+      assert post.title == "some title"
     end
 
     test "create_post/1 with invalid data returns error changeset" do
@@ -47,7 +52,7 @@ defmodule TwitterClone.TimelineTest do
       assert post.body == "some updated body"
       assert post.likes_count == 43
       assert post.reposts_count == 43
-      assert post.username == "some updated username"
+      assert post.title == "some updated title"
     end
 
     test "update_post/2 with invalid data returns error changeset" do

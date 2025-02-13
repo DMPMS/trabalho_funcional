@@ -6,9 +6,9 @@ defmodule TwitterClone.AccountsTest do
   describe "users" do
     alias TwitterClone.Accounts.User
 
-    @valid_attrs %{password_hash: "some password_hash", username: "some username"}
-    @update_attrs %{password_hash: "some updated password_hash", username: "some updated username"}
-    @invalid_attrs %{password_hash: nil, username: nil}
+    @valid_attrs %{password_hash: "some password_hash", title: "some title"}
+    @update_attrs %{password_hash: "some updated password_hash", title: "some updated title"}
+    @invalid_attrs %{password_hash: nil, title: nil}
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =

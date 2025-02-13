@@ -16,11 +16,12 @@
 </span>
 
 <div id="comments" phx-update="prepend">
-  <%= for comment <- @comments do %>
+  <%= for c <- @comments do %>
     <%= live_component @socket,
       TwitterCloneWeb.CommentLive.CommentComponent,
-      id: comment.id,
-      comment: comment
+      id: c.comment.id,
+      user_name: c.user_name,
+      comment: c.comment
     %>
   <% end %>
 </div>

@@ -41,11 +41,16 @@ defmodule TwitterCloneWeb.PostLive.FormComponent do
   end
 
   defp save_post(socket, :new, post_params) do
+    IO.inspect(socket)
+    user = socket.assigns.current_user
+    # Garante que o user_id está presente nos parâmetros
+    post_params = Map.put(post_params, "user_id", user.id)
+
     case Timeline.create_post(post_params) do
       {:ok, _post} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Post created successfully")
+         |> put_flash(:info, "Post criado com sucesso!")
          |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, %Ecto.Changeset{} = changeset} ->

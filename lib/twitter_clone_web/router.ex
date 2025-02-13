@@ -14,8 +14,28 @@ defmodule TwitterCloneWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug TwitterCloneWeb.AuthPipeline
+    plug TwitterCloneWeb.Plugs.Authenticate
+  end
+
+  # 🔹 ROTAS PÚBLICAS: Login e Cadastro NÃO precisam de autenticação
   scope "/", TwitterCloneWeb do
-    pipe_through :browser
+    # 🔹 Apenas `:browser`, sem `:auth`
+    pipe_through [:browser]
+
+    get "/login", SessionController, :new
+    post "/login", SessionController, :create
+    get "/logout", SessionController, :delete
+
+    get "/register", UserController, :new
+    post "/register", UserController, :create
+  end
+
+  # 🔹 ROTAS PROTEGIDAS: Somente usuários autenticados podem acessar
+  scope "/", TwitterCloneWeb do
+    # 🔒 Aplica autenticação
+    pipe_through [:browser, :auth]
 
     live "/", PageLive, :index
 
@@ -25,28 +45,14 @@ defmodule TwitterCloneWeb.Router do
 
     live "/posts/:post_id/comments", CommentLive.Index, :index
     live "/posts/:post_id/comments/new", CommentLive.Index, :new
+
     live "/posts/:post_id/comments/:id/edit", CommentLive.Index, :edit
 
     live "/posts/:id", PostLive.Show, :show
     live "/posts/:id/show/edit", PostLive.Show, :edit
-
-    live "/signup", SignupLive
-    live "/login", AuthLive
-    live "/dashboard", PostLive.Index, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", TwitterCloneWeb do
-  #   pipe_through :api
-  # end
-
-  # Enables LiveDashboard only for development
-  #
-  # If you want to use the LiveDashboard in production, you should put
-  # it behind authentication and allow only admins to access it.
-  # If your application does not have an admins-only section yet,
-  # you can use Plug.BasicAuth to set up some basic authentication
-  # as long as you are also using SSL (which you should anyway).
+  # 🔹 LiveDashboard só disponível no ambiente de desenvolvimento/teste
   if Mix.env() in [:dev, :test] do
     import Phoenix.LiveDashboard.Router
 

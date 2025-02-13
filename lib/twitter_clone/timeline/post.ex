@@ -6,8 +6,9 @@ defmodule TwitterClone.Timeline.Post do
     field :body, :string
     field :likes_count, :integer, default: 0
     field :reposts_count, :integer, default: 0
-    field :username, :string, default: "davi"
+    field :title, :string
     has_many :comments, TwitterClone.Timeline.Comment, on_delete: :delete_all
+    belongs_to :user, TwitterClone.Accounts.User
 
     timestamps()
   end
@@ -15,8 +16,8 @@ defmodule TwitterClone.Timeline.Post do
   @doc false
   def changeset(post, attrs) do
     post
-    |> cast(attrs, [:body])
-    |> validate_required([:body])
+    |> cast(attrs, [:body, :title, :user_id])
+    |> validate_required([:body, :title, :user_id])
     |> validate_length(:body, min: 8, max: 250)
   end
 end

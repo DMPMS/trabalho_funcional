@@ -5,10 +5,14 @@ defmodule TwitterCloneWeb.PostLive.PostComponent do
     ~L"""
     <div id="post-<%= @post.id %>" style="padding: 10px; border: 1px solid #cccccc; max-width: 1000px;">
       <div style="display: flex; align-items: flex-start; gap: 10px;">
-        <img src="https://png.pngtree.com/png-vector/20190710/ourlarge/pngtree-user-vector-avatar-png-image_1541962.jpg" width="50">
+        <img src="https://png.pngtree.com/png-vector/20190710/ourlarge/pngtree-user-vector-avatar-png-image_1541962.jpg" width="50" style="border-radius: 50%;">
         <div>
-          <text style="font-weight: 700; color: #1da1f2;">@<%= @post.username %></text>
-          <p style="font-size: 14px;"><%= @post.body %></p>
+          <div style="display: flex; align-items: center; gap: 5px;">
+        <text style="font-weight: 700; color: #1da1f2;">@<%= @user_name %></text>
+
+          </div>
+          <p style="font-size: 16px; margin: 5px 0;"><%= @post.title %></p>
+          <p style="font-size: 14px; margin: 5px 0; color: #14171a;"><%= @post.body %></p>
         </div>
       </div>
 

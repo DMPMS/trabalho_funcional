@@ -7,14 +7,19 @@ defmodule TwitterClone.Accounts.User do
     field :password, :string, virtual: true
     field :password_hash, :string
     has_many :comments, TwitterClone.Timeline.Comment, on_delete: :nilify_all
+    has_many :posts, TwitterClone.Timeline.Post, on_delete: :nilify_all
+
+    belongs_to :user_role, TwitterClone.Accounts.UserRole,
+      foreign_key: :role_key,
+      type: :string
 
     timestamps()
   end
 
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :password])
-    |> validate_required([:username, :password])
+    |> cast(attrs, [:username, :password, :role_key])
+    |> validate_required([:username, :password, :role_key])
     |> unique_constraint(:username)
     |> put_password_hash()
   end
