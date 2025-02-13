@@ -41,7 +41,6 @@ defmodule TwitterCloneWeb.PostLive.FormComponent do
   end
 
   defp save_post(socket, :new, post_params) do
-    IO.inspect(socket)
     user = socket.assigns.current_user
     # Garante que o user_id está presente nos parâmetros
     post_params = Map.put(post_params, "user_id", user.id)

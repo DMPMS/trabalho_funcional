@@ -27,7 +27,8 @@ config :twitter_clone, TwitterCloneWeb.Endpoint,
       "development",
       "--watch-stdin",
       cd: Path.expand("../assets", __DIR__)
-    ]
+    ],
+    tailwind: {Tailwind, :install_and_run, [:twitter_clone, ~w(--watch)]}
   ]
 
 # ## SSL Support
