@@ -47,7 +47,7 @@ defmodule TwitterClone.MixProject do
       {:gettext, "~> 0.11"},
       {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
       {:jason, "~> 1.0"},
-      {:guardian, "~> 2.0"},
+      {:guardian, "~> 2.2.1"},
       {:plug_cowboy, "~> 2.0"},
       {:comeonin, "~> 5.3.3"},
       {:bcrypt_elixir, "~> 2.3.1"}
