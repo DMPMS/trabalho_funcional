@@ -47,6 +47,10 @@ defmodule TwitterCloneWeb.CommentLive.FormComponent do
   end
 
   defp save_comment(socket, :new, comment_params) do
+    user = socket.assigns.current_user
+    # Garante que o user_id está presente nos parâmetros
+    comment_params = Map.put(comment_params, "user_id", user.id)
+
     case Timeline.create_comment(comment_params) do
       {:ok, _comment} ->
         {:noreply,
