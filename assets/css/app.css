@@ -90,3 +90,9 @@
   display: block;
   margin: -1rem 0 2rem;
 }
+
+@media (max-width: 350px) {
+  .hide-below-350 {
+    display: none;
+  }
+}
