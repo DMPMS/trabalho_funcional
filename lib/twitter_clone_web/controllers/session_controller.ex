@@ -2,7 +2,6 @@ defmodule TwitterCloneWeb.SessionController do
   use TwitterCloneWeb, :controller
 
   def new(conn, _params) do
-    # Exibe o formulário de login
     render(conn, "new.html")
   end
 
@@ -12,7 +11,6 @@ defmodule TwitterCloneWeb.SessionController do
         case TwitterClone.Guardian.encode_and_sign(user) do
           {:ok, token, _claims} ->
             conn
-            # <- 🔥 Garante que o token é salvo corretamente
             |> Guardian.Plug.sign_in(TwitterClone.Guardian, user)
             |> put_session(:token, token)
             |> put_flash(:info, "Login efetuado com sucesso!")
@@ -26,7 +24,7 @@ defmodule TwitterCloneWeb.SessionController do
 
       {:error, _reason} ->
         conn
-        |> put_flash(:error, "Email ou senha inválidos!")
+        |> put_flash(:error, "Usuário ou senha inválidos")
         |> render("new.html")
     end
   end

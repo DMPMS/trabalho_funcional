@@ -29,6 +29,17 @@
         <%= password_input f, :password, class: "w-full py-2 border border-gray-300 rounded-xl transition duration-300" %>
       </div>
       <div class="mb-4">
+        <div class="flex justify-between">
+          <%= label f, :confirmar_senha, class: "block mb-2 text-sm font-medium text-gray-700" %>
+          <%= if error = error_tag(f, :password_confirmation) do %>
+            <div class="text-sm text-red-700">
+              <%= error %>
+            </div>
+          <% end %>
+        </div>
+        <%= password_input f, :password_confirmation, class: "w-full py-2 border border-gray-300 rounded-xl transition duration-300" %>
+      </div>
+      <div class="mb-4">
         <%= submit "Criar conta", class: "w-full py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition duration-300 font-semibold" %>
       </div>
       <% end %>
