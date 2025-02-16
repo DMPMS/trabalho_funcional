@@ -17,7 +17,9 @@ defmodule TwitterClone.Timeline.Post do
   def changeset(post, attrs) do
     post
     |> cast(attrs, [:body, :title, :user_id])
-    |> validate_required([:body, :title, :user_id])
-    |> validate_length(:body, min: 8, max: 250)
+    |> validate_required([:body, :title, :user_id], message: "Preencha este campo")
+    
+    |> validate_length(:title, min: 8, message: "Pelo menos 8 caracteres")
+    |> validate_length(:body, min: 8, message: "Pelo menos 8 caracteres")
   end
 end

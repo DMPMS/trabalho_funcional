@@ -1,4 +1,4 @@
-<h2><%= @title %></h2>
+<h2 class="text-2xl font-semibold text-gray-700 text-center"><%= @title %></h2>
 
 <%= f = form_for @changeset, "#",
   id: "post-form",
@@ -6,11 +6,29 @@
   phx_change: "validate",
   phx_submit: "save" %>
 
-  <%= label f, :title %>
-  <%= text_input f, :title %>
+  <div class="mb-4">
+    <div class="flex justify-between">
+      <%= label f, :título, class: "block mb-2 text-sm font-medium text-gray-700" %>
+      <%= if error = error_tag(f, :title) do %>
+        <div class="text-sm text-red-700">
+          <%= error %>
+        </div>
+      <% end %>
+    </div>
+    <%= text_input f, :title, class: "w-full py-2 border border-gray-300 rounded-xl transition duration-300" %>
+  </div>
 
-  <%= textarea f, :body %>
-  <%= error_tag f, :body %>
+  <div class="mb-4">
+    <div class="flex justify-between">
+      <%= label f, :descrição, class: "block mb-2 text-sm font-medium text-gray-700" %>
+      <%= if error = error_tag(f, :body) do %>
+        <div class="text-sm text-red-700">
+          <%= error %>
+        </div>
+      <% end %>
+    </div>
+    <%= textarea f, :body, class: "w-full py-2 border border-gray-300 rounded-xl transition duration-300" %>
+  </div>
 
-  <%= submit "Salvar", phx_disable_with: "Salvando..." %>
+  <%= submit "Salvar", class: "w-full py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition duration-300 font-semibold", phx_disable_with: "Salvando..." %>
 </form>
