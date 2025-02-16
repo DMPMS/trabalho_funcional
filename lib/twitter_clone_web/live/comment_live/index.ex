@@ -11,8 +11,9 @@ defmodule TwitterCloneWeb.CommentLive.Index do
     user = get_current_user(session) |> elem(1)
 
     if user do
+      post = Timeline.get_post!(post_id)
       comments = list_comments(post_id)
-      {:ok, assign(socket, comments: comments, current_user: user, post_id: post_id)}
+      {:ok, assign(socket, comments: comments, current_user: user, post_id: post_id, post_title: post.title)}
     else
       {:ok, redirect(socket, to: "/logout")}
     end
