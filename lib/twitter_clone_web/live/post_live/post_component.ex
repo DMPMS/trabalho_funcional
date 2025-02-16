@@ -27,14 +27,16 @@ defmodule TwitterCloneWeb.PostLive.PostComponent do
             </div>
           <% end %>
         </div>
-        <div class="flex gap-4">
-          <%= live_patch to: Routes.post_index_path(@socket, :edit, @post.id) do %>
-            <div class="cursor-pointer text-blue-500 text-sm">Editar</div>
-          <% end %>
-          <%= link to: "#", phx_click: "delete", phx_value_id: @post.id, data: [confirm: "Tem certeza?"] do %>
-            <div class="cursor-pointer text-red-500 text-sm">Remover</div>
-          <% end %>
-        </div>
+        <%= if @user_name == @user_logged_username do %>
+          <div class="flex gap-4">
+            <%= live_patch to: Routes.post_index_path(@socket, :edit, @post.id) do %>
+              <div class="cursor-pointer text-blue-500 text-sm">Editar</div>
+            <% end %>
+            <%= link to: "#", phx_click: "delete", phx_value_id: @post.id, data: [confirm: "Tem certeza?"] do %>
+              <div class="cursor-pointer text-red-500 text-sm">Remover</div>
+            <% end %>
+          </div>
+        <% end %>
       </div>
     </div>
     """

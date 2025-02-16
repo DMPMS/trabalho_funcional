@@ -26,7 +26,10 @@
           TwitterCloneWeb.CommentLive.CommentComponent,
           id: c.comment.id,
           user_name: c.user_name,
-          comment: c.comment
+          comment: c.comment,
+          post_user_id: @post_user_id,
+          user_logged_id: @current_user.id,
+          user_logged_username: @current_user.username
         %>
       <% end %>
     </div>

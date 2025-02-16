@@ -24,7 +24,8 @@
           id: p.post.id,
           post: p.post,
           user_name: p.user_name,
-          comments_count: p.comments_count
+          comments_count: p.comments_count,
+          user_logged_username: @current_user.username
         %>
       <% end %>
     </div>

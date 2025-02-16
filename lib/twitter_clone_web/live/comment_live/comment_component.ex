@@ -14,11 +14,16 @@ defmodule TwitterCloneWeb.CommentLive.CommentComponent do
 
       <div class="flex justify-end">
         <div class="flex gap-4">
-          <%= live_patch to: Routes.comment_index_path(@socket, :edit, @comment.post_id, @comment.id) do %>
-            <div class="cursor-pointer text-blue-500 text-sm">Editar</div>
+          <%= if @user_name == @user_logged_username do %>
+            <%= live_patch to: Routes.comment_index_path(@socket, :edit, @comment.post_id, @comment.id) do %>
+              <div class="cursor-pointer text-blue-500 text-sm">Editar</div>
+            <% end %>
           <% end %>
-          <%= link to: "#", phx_click: "delete", phx_value_id: @comment.id, data: [confirm: "Tem certeza?"] do %>
-            <div class="cursor-pointer text-red-500 text-sm">Remover</div>
+
+          <%= if @user_name == @user_logged_username || @post_user_id == @user_logged_id do %>
+            <%= link to: "#", phx_click: "delete", phx_value_id: @comment.id, data: [confirm: "Tem certeza?"] do %>
+              <div class="cursor-pointer text-red-500 text-sm">Remover</div>
+            <% end %>
           <% end %>
         </div>
       </div>
