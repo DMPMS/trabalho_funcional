@@ -22,8 +22,8 @@ defmodule TwitterClone.Accounts.User do
     |> cast(attrs, [:username, :password, :password_confirmation])
     |> validate_required([:username, :password], message: "Preencha este campo")
 
-    |> validate_length(:username, min: 8, message: "Pelo menos 8 caracteres")
-    |> validate_length(:password, min: 8, message: "Pelo menos 8 caracteres")
+    |> validate_length(:username, min: 8, max: 20, message: "Entre 8 e 20 caracteres")
+    |> validate_length(:password, min: 8, max: 100, message: "Entre 8 e 100 caracteres")
 
     |> validate_confirmation(:password, message: "As senhas não coincidem")
     |> unique_constraint(:username, message: "Nome de usuário em uso")

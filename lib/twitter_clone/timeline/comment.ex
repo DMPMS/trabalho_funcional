@@ -15,6 +15,6 @@ defmodule TwitterClone.Timeline.Comment do
     |> cast(attrs, [:body, :post_id, :user_id])
     |> validate_required([:body, :post_id], message: "Preencha este campo")
     
-    |> validate_length(:body, min: 8, message: "Pelo menos 8 caracteres")
+    |> validate_length(:body, min: 8, max: 200, message: "Entre 8 e 200 caracteres")
   end
 end

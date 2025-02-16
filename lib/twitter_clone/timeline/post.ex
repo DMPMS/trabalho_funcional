@@ -19,7 +19,7 @@ defmodule TwitterClone.Timeline.Post do
     |> cast(attrs, [:body, :title, :user_id])
     |> validate_required([:body, :title, :user_id], message: "Preencha este campo")
     
-    |> validate_length(:title, min: 8, message: "Pelo menos 8 caracteres")
-    |> validate_length(:body, min: 8, message: "Pelo menos 8 caracteres")
+    |> validate_length(:title, min: 8, max: 50, message: "Entre 8 e 50 caracteres")
+    |> validate_length(:body, min: 8, max: 200, message: "Entre 8 e 200 caracteres")
   end
 end
