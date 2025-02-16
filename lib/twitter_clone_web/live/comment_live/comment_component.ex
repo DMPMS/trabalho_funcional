@@ -3,23 +3,24 @@ defmodule TwitterCloneWeb.CommentLive.CommentComponent do
 
   def render(assigns) do
     ~L"""
-    <div id="comment-<%= @comment.id %>" style="padding: 10px; border: 1px solid #cccccc; max-width: 1000px;">
-      <div style="display: flex; align-items: flex-start; gap: 10px;">
-        <img src="https://png.pngtree.com/png-vector/20190710/ourlarge/pngtree-user-vector-avatar-png-image_1541962.jpg" width="50">
+    <div id="comment-<%= @comment.id %>" class="bg-white p-6 border border-gray-300 rounded-xl">
+      <div class="flex items-start gap-4 mb-4">
+        <img src="https://png.pngtree.com/png-vector/20190710/ourlarge/pngtree-user-vector-avatar-png-image_1541962.jpg" class="w-12 h-12 rounded-full">
         <div>
-          <text style="font-weight: 700; color: #1da1f2;">@<%= @user_name %></text>
-           <p style="font-size: 16px; margin: 5px 0;"><%= @comment.body %></p>
-          <p style="font-size: 14px;"><%= @comment.post_id %></p>
+          <text class="text-sm font-medium text-blue-500">@<%= @user_name %></text>
+          <p class="text-sm text-gray-700"><%= @comment.body %></p>
         </div>
       </div>
 
-      <div style="display: flex; gap: 10px;">
-        <%= live_patch to: Routes.comment_index_path(@socket, :edit, @comment.post_id, @comment.id) do %>
-          <div style="cursor: pointer; color: #1da1f2; font-size: 14px;">Editar</div>
-        <% end %>
-        <%= link to: "#", phx_click: "delete", phx_value_id: @comment.id, data: [confirm: "Tem certeza?"] do %>
-          <div style="cursor: pointer; color: #1da1f2; font-size: 14px;">Remover</div>
-        <% end %>
+      <div class="flex justify-end">
+        <div class="flex gap-4">
+          <%= live_patch to: Routes.comment_index_path(@socket, :edit, @comment.post_id, @comment.id) do %>
+            <div class="cursor-pointer text-blue-500 text-sm">Editar</div>
+          <% end %>
+          <%= link to: "#", phx_click: "delete", phx_value_id: @comment.id, data: [confirm: "Tem certeza?"] do %>
+            <div class="cursor-pointer text-red-500 text-sm">Remover</div>
+          <% end %>
+        </div>
       </div>
     </div>
     """

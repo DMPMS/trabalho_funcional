@@ -31,7 +31,7 @@ defmodule TwitterCloneWeb.CommentLive.Index do
 
   defp apply_action(socket, :new, %{"post_id" => post_id}) do
     socket
-    |> assign(:page_title, "Novo Comentario")
+    |> assign(:page_title, "Novo Comentário")
     |> assign(:comment, %Comment{post_id: post_id})
   end
 
