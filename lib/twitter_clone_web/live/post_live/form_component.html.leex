@@ -28,6 +28,9 @@
       <% end %>
     </div>
     <%= textarea f, :body, class: "w-full py-2 border border-gray-300 rounded-xl transition duration-300" %>
+    <div class="text-right text-sm text-gray-500 mt-1">
+      <%= @remaining_chars %> / 200 caracteres
+    </div>
   </div>
 
   <%= submit "Salvar", class: "w-full py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition duration-300 font-semibold", phx_disable_with: "Salvando..." %>

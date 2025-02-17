@@ -6,11 +6,13 @@ defmodule TwitterCloneWeb.PostLive.FormComponent do
   @impl true
   def update(%{post: post} = assigns, socket) do
     changeset = Timeline.change_post(post)
+    remaining_chars = String.length(post.body || "")
 
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(:changeset, changeset)}
+     |> assign(:changeset, changeset)
+     |> assign(:remaining_chars, remaining_chars)}
   end
 
   @impl true
@@ -20,7 +22,9 @@ defmodule TwitterCloneWeb.PostLive.FormComponent do
       |> Timeline.change_post(post_params)
       |> Map.put(:action, :validate)
 
-    {:noreply, assign(socket, :changeset, changeset)}
+    remaining_chars = String.length(post_params["body"] || "")
+
+    {:noreply, assign(socket, changeset: changeset, remaining_chars: remaining_chars)}
   end
 
   def handle_event("save", %{"post" => post_params}, socket) do

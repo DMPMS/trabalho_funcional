@@ -6,11 +6,13 @@ defmodule TwitterCloneWeb.CommentLive.FormComponent do
   @impl true
   def update(%{comment: comment} = assigns, socket) do
     changeset = Timeline.change_comment(comment)
+    remaining_chars = String.length(comment.body || "")
 
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(:changeset, changeset)}
+     |> assign(:changeset, changeset)
+     |> assign(:remaining_chars, remaining_chars)}
   end
 
   @impl true
@@ -20,7 +22,9 @@ defmodule TwitterCloneWeb.CommentLive.FormComponent do
       |> Timeline.change_comment(comment_params)
       |> Map.put(:action, :validate)
 
-    {:noreply, assign(socket, :changeset, changeset)}
+    remaining_chars = String.length(comment_params["body"] || "")
+
+    {:noreply, assign(socket, changeset: changeset, remaining_chars: remaining_chars)}
   end
 
   def handle_event("save", %{"comment" => comment_params}, socket) do
