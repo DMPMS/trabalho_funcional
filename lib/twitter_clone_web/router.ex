@@ -19,9 +19,8 @@ defmodule TwitterCloneWeb.Router do
     plug TwitterCloneWeb.Plugs.Authenticate
   end
 
-  # 🔹 ROTAS PÚBLICAS: Login e Cadastro NÃO precisam de autenticação
+  # Rotas públicas
   scope "/", TwitterCloneWeb do
-    # 🔹 Apenas `:browser`, sem `:auth`
     pipe_through [:browser]
 
     get "/login", SessionController, :new
@@ -32,9 +31,8 @@ defmodule TwitterCloneWeb.Router do
     post "/register", UserController, :create
   end
 
-  # 🔹 ROTAS PROTEGIDAS: Somente usuários autenticados podem acessar
+  # Rotas protegidas
   scope "/", TwitterCloneWeb do
-    # 🔒 Aplica autenticação
     pipe_through [:browser, :auth]
 
     live "/", PageLive, :index
@@ -51,8 +49,7 @@ defmodule TwitterCloneWeb.Router do
     live "/posts/:id", PostLive.Show, :show
     live "/posts/:id/show/edit", PostLive.Show, :edit
   end
-
-  # 🔹 LiveDashboard só disponível no ambiente de desenvolvimento/teste
+  
   if Mix.env() in [:dev, :test] do
     import Phoenix.LiveDashboard.Router
 
